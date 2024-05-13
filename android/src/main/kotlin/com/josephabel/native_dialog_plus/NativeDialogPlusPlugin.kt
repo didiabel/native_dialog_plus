@@ -1,5 +1,6 @@
 package com.josephabel.native_dialog_plus
 
+import com.josephabel.native_dialog_plus.R
 import android.app.Activity
 import android.app.AlertDialog
 import androidx.annotation.NonNull
@@ -24,25 +25,28 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
             "showDialog" -> {
+                
                 val title = call.argument<String?>("title") ?: ""
                 val message = call.argument<String>("message") ?: ""
                 val buttons = call.argument<List<Map<String, Any>>>("actions")
 
                 if (buttons != null) {
-                    val buttonConfigs = buttons.map { button ->
+                    val buttonConfigs = buttons.mapIndexed { index, button ->
                         val text = button["text"] as String
                         val style = when(button["style"] as String) {
-                            "DEFAULT" -> ButtonStyle.DEFAULT
-                            "CANCEL" -> ButtonStyle.CANCEL
-                            "DESTRUCTIVE" -> ButtonStyle.DESTRUCTIVE
-                            else -> ButtonStyle.DEFAULT
+                            "DEFAULT" -> NativeDialogPlusActionStyle.DEFAULT
+                            "CANCEL" -> NativeDialogPlusActionStyle.CANCEL
+                            "DESTRUCTIVE" -> NativeDialogPlusActionStyle.DESTRUCTIVE
+                            else -> NativeDialogPlusActionStyle.DEFAULT
                         }
-                        ButtonConfig(text, style, button["enabled"] as Boolean)
+                        NativeDialogPlusAction(text, style) {
+                            result.success(index)
+                        }
                     }
                     showDialog(title, message, buttonConfigs, result)
                 } else {
                     result.error("INVALID_ARGUMENT", "Buttons argument is missing or invalid", null)
-                }
+                }                
             }
             else -> {
                 result.notImplemented()
@@ -73,36 +77,32 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     private fun showDialog(
         title: String,
         message: String,
-        buttons: List<ButtonConfig>,
+        buttons: List<NativeDialogPlusAction>,
         result: Result
     ) {
-        // Ensure activity is available
-        val currentActivity = activity ?: run {
-            result.error("UNAVAILABLE", "Native alert is unavailable", null)
-            return
-        }
-    
+        ContextThemeWrapper ctw = new ContextThemeWrapper(TestActivity.this, R.style.MyAlertDialogStyle);
+
         // Create AlertDialog.Builder
-        val builder = AlertDialog.Builder(currentActivity)
+        val builder = AlertDialog.Builder(ctw)
             .setTitle(title)
             .setMessage(message)
     
         // Add buttons to the dialog
-        buttons.forEachIndexed { index, buttonConfig ->
-            when (buttonConfig.style) {
-                ButtonStyle.DEFAULT -> builder.setPositiveButton(buttonConfig.text) { dialog, _ ->
-                    result.success(index)
-                    dialog.dismiss()
+        buttons.forEachIndexed { index, action ->
+                when (action.style) {
+                    NativeDialogPlusActionStyle.DEFAULT -> builder.setButton(action.text) { dialog, _ ->
+                        action.onPressed?.invoke()
+                        dialog.dismiss()
+                    }
+                    NativeDialogPlusActionStyle.CANCEL -> builder.setButton(action.text) { dialog, _ ->
+                        action.onPressed?.invoke()
+                        dialog.dismiss()
+                    }
+                    NativeDialogPlusActionStyle.DESTRUCTIVE -> builder.setButton(action.text) { dialog, _ ->
+                        action.onPressed?.invoke()
+                        dialog.dismiss()
+                    }
                 }
-                ButtonStyle.CANCEL -> builder.setNeutralButton(buttonConfig.text) { dialog, _ ->
-                    result.success(index)
-                    dialog.dismiss()
-                }
-                ButtonStyle.DESTRUCTIVE -> builder.setNegativeButton(buttonConfig.text) { dialog, _ ->
-                    result.success(index)
-                    dialog.dismiss()
-                }
-            }
         }
     
         // Show the dialog
@@ -110,12 +110,11 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         alertDialog.show()
     }
     
+    data class NativeDialogPlusAction(val text: String, val style: NativeDialogPlusActionStyle, val onPressed: () -> Unit)
 
-    data class ButtonConfig(val text: String, val style: ButtonStyle, val enabled: Boolean)
-
-    enum class ButtonStyle {
+    enum class NativeDialogPlusActionStyle {
         DEFAULT,
         CANCEL,
         DESTRUCTIVE
-    }
+    }    
 }
