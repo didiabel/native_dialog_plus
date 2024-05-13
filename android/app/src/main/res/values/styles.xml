@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Define your custom AlertDialog theme -->
+    <style name="MyAlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Customize attributes as needed -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="buttonBarPositiveButtonStyle">@style/MyButtonStyle</item>
+        <item name="buttonBarNeutralButtonStyle">@style/MyButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/MyButtonStyle</item>
+    </style>
+
+    <!-- Define your custom button style -->
+    <style name="MyButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <!-- Customize button style as needed -->
+        <item name="android:textColor">@color/custom_button_text_color</item>
+        <item name="android:textSize">16sp</item>
+        <!-- Add more attributes to customize the button appearance -->
+    </style>
+</resources>
