@@ -13,8 +13,11 @@ class NativeDialogPlusAction {
   /// If this callback is null, then the action is disabled
   final VoidCallback? onPressed;
 
-  NativeDialogPlusAction(
-      {required this.text, required this.style, this.onPressed});
+  NativeDialogPlusAction({
+    required this.text,
+    this.style = NativeDialogPlusActionStyle.defaultStyle,
+    this.onPressed,
+  });
 
   /// Get if the action is enabled or not
   bool get enabled => onPressed != null;

@@ -93,9 +93,22 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
             }
         }
 
-        // Show the dialog
         val alertDialog = builder.create()
         alertDialog.show()
+
+        // for future implementations this is how to set button colors
+        // import:
+        // import android.graphics.Color
+        // import android.widget.Button
+
+        // val negativeButton: Button? = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+        // negativeButton?.setTextColor(Color.RED)
+
+        // val positiveButton: Button? = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        // positiveButton?.setTextColor(Color.GREEN)
+
+        // val neutralButton: Button? = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL)
+        // neutralButton?.setTextColor(Color.BLUE)
     }
 
     data class NativeDialogPlusAction(val text: String, val style: Int, val onPressed: () -> Unit)
