@@ -1,6 +1,5 @@
 import 'dart:async';
-import 'dart:html' as html show window;
-
+import 'dart:html' as html;
 import 'package:flutter/services.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
@@ -18,12 +17,9 @@ class NativeDialogPlusWeb {
 
   Future<dynamic> handleMethodCall(MethodCall call) async {
     switch (call.method) {
-      case 'alert':
-        final message = _getMessage(call.arguments);
+      case 'showDialog':
+        final message = call.arguments['message'];
         return _alert(message);
-      case 'confirm':
-        final message = _getMessage(call.arguments);
-        return _confirm(message);
       default:
         throw PlatformException(
           code: 'Unimplemented',
@@ -33,17 +29,8 @@ class NativeDialogPlusWeb {
     }
   }
 
-  String _getMessage(dynamic arguments) {
-    return arguments.first as String;
-  }
-
-  Future<void> _alert(String message) {
+  Future<void> _alert(String message) async {
     html.window.alert(message);
     return Future.value();
-  }
-
-  Future<bool> _confirm(String message) {
-    final result = html.window.confirm(message);
-    return Future.value(result);
   }
 }
