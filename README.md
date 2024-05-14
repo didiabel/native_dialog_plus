@@ -2,13 +2,21 @@ A flutter package that is a minimalistic plugin to show native Dialogs, Android 
 
 ## Description
 
+#### Android
+
 Native Dialog Plus uses the native UI on each platform to show alert and confirm dialogs.
 It automatically uses the localized texts for "Positive", "Negative" and/or "Neutral" buttons.
+
 **IMPORTANT**
+
 Due to framework limitations Android is limited to the maximum of 3 actions one of each NativeDialogPlusActionStyle style
 therefore its limited to one defaultStyle, cancel and destructive each, the order of the actions in the list does not change the position in the dialog.
 
-iOS has no limit on the number of actions
+#### IOS
+
+iOS has no limit on the number of actions.
+
+Buttons are disabled if no callback is passed on onPressed.
 
 ## Usage
 
