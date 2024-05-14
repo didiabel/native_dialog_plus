@@ -1,8 +1,9 @@
 package com.josephabel.native_dialog_plus
 
-import com.josephabel.native_dialog_plus.R
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -11,7 +12,6 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import android.content.DialogInterface
 
 class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     private lateinit var channel : MethodChannel
@@ -30,15 +30,11 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
                 val message = call.argument<String>("message") ?: ""
                 val buttons = call.argument<List<Map<String, Any>>>("actions")
 
-                if (buttons != null) {
+                if (buttons != null) {                    
                     val buttonConfigs = buttons.mapIndexed { index, button ->
+                        println(button["style"])
                         val text = button["text"] as String
-                        val style = when(button["style"] as String) {
-                            "DEFAULT" -> NativeDialogPlusActionStyle.DEFAULT
-                            "CANCEL" -> NativeDialogPlusActionStyle.CANCEL
-                            "DESTRUCTIVE" -> NativeDialogPlusActionStyle.DESTRUCTIVE
-                            else -> NativeDialogPlusActionStyle.DEFAULT
-                        }
+                        val style = button["style"] as Int
                         NativeDialogPlusAction(text, style) {
                             result.success(index)
                         }
@@ -74,47 +70,34 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         activity = null
     }
 
+
     private fun showDialog(
         title: String,
         message: String,
         buttons: List<NativeDialogPlusAction>,
         result: Result
     ) {
-        ContextThemeWrapper ctw = new ContextThemeWrapper(TestActivity.this, R.style.MyAlertDialogStyle);
-
-        // Create AlertDialog.Builder
-        val builder = AlertDialog.Builder(ctw)
+        val builder = AlertDialog.Builder(activity ?: throw NullPointerException())
             .setTitle(title)
             .setMessage(message)
-    
+
         // Add buttons to the dialog
         buttons.forEachIndexed { index, action ->
+            val listener = DialogInterface.OnClickListener { dialog, _ -> result.success(index) }
+            if (listener != null) {
                 when (action.style) {
-                    NativeDialogPlusActionStyle.DEFAULT -> builder.setButton(action.text) { dialog, _ ->
-                        action.onPressed?.invoke()
-                        dialog.dismiss()
-                    }
-                    NativeDialogPlusActionStyle.CANCEL -> builder.setButton(action.text) { dialog, _ ->
-                        action.onPressed?.invoke()
-                        dialog.dismiss()
-                    }
-                    NativeDialogPlusActionStyle.DESTRUCTIVE -> builder.setButton(action.text) { dialog, _ ->
-                        action.onPressed?.invoke()
-                        dialog.dismiss()
-                    }
+                    0 -> builder.setPositiveButton(action.text, listener)
+                    1 -> builder.setNeutralButton(action.text, listener)
+                    2 -> builder.setNegativeButton(action.text, listener)
                 }
+            }
         }
-    
+
         // Show the dialog
         val alertDialog = builder.create()
         alertDialog.show()
     }
-    
-    data class NativeDialogPlusAction(val text: String, val style: NativeDialogPlusActionStyle, val onPressed: () -> Unit)
 
-    enum class NativeDialogPlusActionStyle {
-        DEFAULT,
-        CANCEL,
-        DESTRUCTIVE
-    }    
+    data class NativeDialogPlusAction(val text: String, val style: Int, val onPressed: () -> Unit)
+
 }
