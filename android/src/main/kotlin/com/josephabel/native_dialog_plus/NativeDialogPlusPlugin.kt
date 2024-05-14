@@ -77,7 +77,8 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         buttons: List<NativeDialogPlusAction>,
         result: Result
     ) {
-        val builder = AlertDialog.Builder(activity ?: throw NullPointerException())
+
+        val builder = AlertDialog.Builder(activity ?: throw NullPointerException(), R.style.AlertDialogCustom)
             .setTitle(title)
             .setMessage(message)
 
@@ -97,10 +98,10 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         alertDialog.show()
 
         // for future implementations this is how to set button colors
-        // import:
+        // import
         // import android.graphics.Color
         // import android.widget.Button
-
+        
         // val negativeButton: Button? = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
         // negativeButton?.setTextColor(Color.RED)
 

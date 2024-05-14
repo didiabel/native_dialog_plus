@@ -65,13 +65,18 @@ class NativeDialogPlus {
   /// List of actions that the dialog has.
   /// Please note that if there is no action, the user cannot close the dialog unless he closes the whole app.
   /// The same also applies when all actions are disabled (`onPressed` is null)
+  /// **IMPORTANT**
+  /// Android is limited to the maximum of 3 actions one of each NativeDialogPlusActionStyle style
+  /// therefore its limited to one defaultStyle, cancel and destructive each, the order of the actions in the list does not change the position in the dialog.
+  /// iOS has no limit on the number of actions
   final List<NativeDialogPlusAction> actions;
 
-  NativeDialogPlus(
-      {this.title,
-      this.message,
-      this.style = NativeDialogPlusStyle.alert,
-      required this.actions});
+  NativeDialogPlus({
+    this.title,
+    this.message,
+    this.style = NativeDialogPlusStyle.alert,
+    required this.actions,
+  });
 
   /// Shows the native iOS Dialog and calls the specific `onPressed` handler
   ///
