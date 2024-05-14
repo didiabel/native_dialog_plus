@@ -46,12 +46,12 @@ NativeDialogPlus(
 
 #### Android
 
-<img alt="android-alert" src="https://github.com/didiabel/native_dialog_plus/blob/dev/assets/android.gif" height="480">
+<img alt="android-alert" src="https://raw.githubusercontent.com/didiabel/native_dialog_plus/dev/assets/android.gif" height="480">
 
 #### iOS
 
-<img alt="ios-alert" src="https://github.com/didiabel/native_dialog_plus/blob/dev/assets/iOS.gif" height="480">
+<img alt="ios-alert" src="https://raw.githubusercontent.com/didiabel/native_dialog_plus/dev/assets/iOS.gif" height="480">
 
 #### Web
 
-<img alt="web-alert" src="https://github.com/didiabel/native_dialog_plus/blob/dev/assets/web.gif" height="480">
+<img alt="web-alert" src="https://raw.githubusercontent.com/didiabel/native_dialog_plus/dev/assets/web.gif" height="480">
