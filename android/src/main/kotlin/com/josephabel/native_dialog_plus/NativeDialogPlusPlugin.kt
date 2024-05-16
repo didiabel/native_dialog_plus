@@ -5,6 +5,9 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import androidx.annotation.NonNull
+import android.graphics.drawable.ColorDrawable
+import android.graphics.Color
+import android.graphics.drawable.InsetDrawable
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -12,6 +15,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+
 
 class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     private lateinit var channel : MethodChannel
@@ -81,6 +85,7 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         val builder = AlertDialog.Builder(activity ?: throw NullPointerException(), R.style.AlertDialogCustom)
             .setTitle(title)
             .setMessage(message)
+            .setCancelable(false)
 
         // Add buttons to the dialog
         buttons.forEachIndexed { index, action ->
@@ -95,6 +100,11 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         }
 
         val alertDialog = builder.create()
+
+        val back = ColorDrawable(Color.WHITE)
+        val inset = InsetDrawable(back, 20, 20, 20, 20)
+        alertDialog.window?.setBackgroundDrawable(inset)
+
         alertDialog.show()
 
         // for future implementations this is how to set button colors
