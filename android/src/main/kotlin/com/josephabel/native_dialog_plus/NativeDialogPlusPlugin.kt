@@ -82,7 +82,7 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         result: Result
     ) {
 
-        val builder = AlertDialog.Builder(activity ?: throw NullPointerException(), R.style.AlertDialogCustom)
+        val builder = AlertDialog.Builder(activity ?: throw NullPointerException(), R.style.NativeDialogStyle)
             .setTitle(title)
             .setMessage(message)
             .setCancelable(false)
