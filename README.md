@@ -5,7 +5,6 @@ A flutter minimalistic plugin to show native Dialogs!!
 #### Android
 
 Native Dialog Plus uses the native UI on each platform to show alert and confirm dialogs.
-It automatically uses the localized texts for "Positive", "Negative" and/or "Neutral" buttons.
 
 **IMPORTANT**
 

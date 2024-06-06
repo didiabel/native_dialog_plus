@@ -1,6 +1,6 @@
 name: native_dialog_plus
-description: 'A flutter minimalistic plugin to show native Dialogs!, Compatible with iOS and Android, uses the native UI on each platform to show alert and confirm dialogs. It automatically uses the localized texts for "Positive", "Negative" and/or "Neutral" buttons.'
-version: 1.0.2
+description: 'A flutter minimalistic plugin to show native Dialogs!, Compatible with iOS and Android, uses the native UI on each platform to show alert and confirm dialogs.'
+version: 1.0.3
 homepage: 'https://github.com/didiabel/native_dialog_plus'
 
 environment:
