@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="NativeDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@drawable/dialog_background</item>
         <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
 
