@@ -28,7 +28,7 @@ android {
     compileSdkVersion 30
 
     if (project.android.hasProperty("namespace")) {
-        namespace("com.didiabel.native_dialog_plus")
+        namespace("com.josephabel.native_dialog_plus")
     }
 
     sourceSets {
