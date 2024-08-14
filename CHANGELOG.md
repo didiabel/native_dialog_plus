@@ -5,3 +5,7 @@
 ## 1.0.5
 
 - Added namespace
+
+## 1.0.6
+
+- Added compileOptions and kotlinOptions for jvmTarget 1.8
