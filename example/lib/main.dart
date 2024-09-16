@@ -69,24 +69,18 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.blue,
               onPressed: () {
                 NativeDialogPlus(
-                  title: 'This title',
+                  title: 'Moshiach NOW',
                   style: NativeDialogPlusStyle.actionSheet,
                   actions: [
                     NativeDialogPlusAction(
-                      text: "Prueba 2",
-                      onPressed: () {
-                        debugPrint("Test 2 ");
-                      },
+                      text: 'Now',
+                      style: NativeDialogPlusActionStyle.cancel,
                     ),
                     NativeDialogPlusAction(
                       text: "BZ'H",
                       onPressed: () {
                         debugPrint("Test");
                       },
-                    ),
-                    NativeDialogPlusAction(
-                      text: 'Cancel',
-                      style: NativeDialogPlusActionStyle.cancel,
                     ),
                   ],
                 ).show();
