@@ -43,27 +43,50 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             MaterialButton(
-                color: Colors.blue,
-                onPressed: () {
-                  NativeDialogPlus(
-                    actions: [
-                      NativeDialogPlusAction(
-                        text: 'Now',
-                        style: NativeDialogPlusActionStyle.destructive,
-                      ),
-                      NativeDialogPlusAction(
-                        text: "BZ'H",
-                        onPressed: () {
-                          print("Moshiach vibes");
-                        },
-                        style: NativeDialogPlusActionStyle.defaultStyle,
-                      ),
-                    ],
-                    title: 'This is a test dialog',
-                    message: 'Moshiach NOW',
-                  ).show();
-                },
-                child: const Text('Show basic dialog')),
+              color: Colors.blue,
+              onPressed: () {
+                NativeDialogPlus(
+                  actions: [
+                    NativeDialogPlusAction(
+                      text: 'Now',
+                      style: NativeDialogPlusActionStyle.destructive,
+                    ),
+                    NativeDialogPlusAction(
+                      text: "BZ'H",
+                      onPressed: () {
+                        debugPrint("Moshiach vibes");
+                      },
+                      style: NativeDialogPlusActionStyle.defaultStyle,
+                    ),
+                  ],
+                  title: 'This is a test dialog',
+                  message: 'Moshiach NOW',
+                ).show();
+              },
+              child: const Text('Show basic dialog'),
+            ),
+            MaterialButton(
+              color: Colors.blue,
+              onPressed: () {
+                NativeDialogPlus(
+                  title: 'Moshiach NOW',
+                  style: NativeDialogPlusStyle.actionSheet,
+                  actions: [
+                    NativeDialogPlusAction(
+                      text: 'Now',
+                      style: NativeDialogPlusActionStyle.cancel,
+                    ),
+                    NativeDialogPlusAction(
+                      text: "BZ'H",
+                      onPressed: () {
+                        debugPrint("Test");
+                      },
+                    ),
+                  ],
+                ).show();
+              },
+              child: const Text('Show Action sheet'),
+            ),
           ],
         ),
       ),

@@ -9,3 +9,7 @@
 ## 1.0.6
 
 - Added compileOptions and kotlinOptions for jvmTarget 1.8
+
+## 1.0.7
+
+- Added Action sheet for Android
