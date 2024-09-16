@@ -107,16 +107,16 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     val view = LayoutInflater.from(activity).inflate(R.layout.action_sheet_layout, null)
     
     // Set white background for the dialog
-    //view.setBackgroundColor(Color.WHITE)
+    view.setBackgroundColor(Color.WHITE)
     
     // Set title if available
     val titleView: TextView = view.findViewById(R.id.title)
     if (title.isNotEmpty()) {
         titleView.text = title
         titleView.visibility = View.VISIBLE
-        titleView.setPadding(16, 16, 16, 16)
-        titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
-        titleView.setTextColor(Color.WHITE)
+        titleView.setPadding(8, 8, 8, 8)
+        titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+        titleView.setTextColor(Color.GRAY)
     }
 
     // Set actions (buttons) dynamically based on the list provided
@@ -124,29 +124,23 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     actions.forEachIndexed { index, action ->
         val button = Button(activity).apply {
             text = action.text
+            textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            gravity = android.view.Gravity.START or android.view.Gravity.CENTER_VERTICAL
             setOnClickListener {
                 result.success(index)
                 bottomSheetDialog.dismiss()
             }
             
-            setBackgroundResource(R.drawable.rounded_button) // Set the rounded background
+            setBackgroundResource(R.drawable.rounded_button)
            
             val layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-
-            var style = action.style
-            println(style.toString())
-            if (style == 0) {
-                setTextColor(Color.parseColor("#1685fe"))
-                layoutParams.setMargins(0, 1, 0, 0)
-            } else {
-                setTextColor(Color.BLACK)
-                setTypeface(null, android.graphics.Typeface.BOLD)
-                layoutParams.setMargins(0, 10, 0, 0)
-            }
-
+            
+            setTextColor(Color.BLACK)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
+            paint.isFakeBoldText = true
             
             this.layoutParams = layoutParams
         }

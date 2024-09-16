@@ -69,6 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.blue,
               onPressed: () {
                 NativeDialogPlus(
+                  title: 'This title',
                   style: NativeDialogPlusStyle.actionSheet,
                   actions: [
                     NativeDialogPlusAction(
