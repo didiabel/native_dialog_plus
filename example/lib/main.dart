@@ -72,8 +72,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: NativeDialogPlusStyle.actionSheet,
                   actions: [
                     NativeDialogPlusAction(
-                      text: 'Cancel',
-                      style: NativeDialogPlusActionStyle.cancel,
+                      text: "Prueba 2",
+                      onPressed: () {
+                        debugPrint("Test 2 ");
+                      },
                     ),
                     NativeDialogPlusAction(
                       text: "BZ'H",
@@ -81,9 +83,11 @@ class _MyHomePageState extends State<MyHomePage> {
                         debugPrint("Test");
                       },
                     ),
+                    NativeDialogPlusAction(
+                      text: 'Cancel',
+                      style: NativeDialogPlusActionStyle.cancel,
+                    ),
                   ],
-                  title: 'This is a test dialog',
-                  message: 'Moshiach NOW',
                 ).show();
               },
               child: const Text('Show Action sheet'),

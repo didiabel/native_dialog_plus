@@ -1,5 +1,6 @@
 package com.josephabel.native_dialog_plus
 
+import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
 import android.widget.LinearLayout
@@ -99,46 +100,66 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     title: String,
     actions: List<NativeDialogPlusAction>,
     result: Result
-    ) {
-        val bottomSheetDialog = BottomSheetDialog(activity ?: throw NullPointerException(), R.style.NativeDialogStyle)
-        
-        // Inflate custom layout for BottomSheetDialog
-        val view = LayoutInflater.from(activity).inflate(R.layout.action_sheet_layout, null)
-        
-        // Set title if available
-        val titleView: TextView = view.findViewById(R.id.title)
-        if (title.isNotEmpty()) {
-            titleView.text = title
-            titleView.visibility = View.VISIBLE
-        }
+) {
+    val bottomSheetDialog = BottomSheetDialog(activity ?: throw NullPointerException(), R.style.NativeDialogStyle)
+    
+    // Inflate custom layout for BottomSheetDialog
+    val view = LayoutInflater.from(activity).inflate(R.layout.action_sheet_layout, null)
+    
+    // Set white background for the dialog
+    //view.setBackgroundColor(Color.WHITE)
+    
+    // Set title if available
+    val titleView: TextView = view.findViewById(R.id.title)
+    if (title.isNotEmpty()) {
+        titleView.text = title
+        titleView.visibility = View.VISIBLE
+        titleView.setPadding(16, 16, 16, 16)
+        titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+        titleView.setTextColor(Color.WHITE)
+    }
 
-        // Set actions (buttons) dynamically based on the list provided
-        val actionContainer: LinearLayout = view.findViewById(R.id.action_container)
-        actions.forEachIndexed { index, action ->
-            val button = Button(activity)
-            button.text = action.text
-            button.setOnClickListener {
+    // Set actions (buttons) dynamically based on the list provided
+    val actionContainer: LinearLayout = view.findViewById(R.id.action_container)
+    actions.forEachIndexed { index, action ->
+        val button = Button(activity).apply {
+            text = action.text
+            setOnClickListener {
                 result.success(index)
                 bottomSheetDialog.dismiss()
             }
+            
+            setBackgroundResource(R.drawable.rounded_button) // Set the rounded background
+           
+            val layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
 
-            // Set button style based on action style (0: positive, 1: neutral, 2: negative)
-            // when (action.style) {
-            //     0 -> button.setTextColor(Color.GREEN)  // Positive action
-            //     1 -> button.setTextColor(Color.BLUE)   // Neutral action
-            //     2 -> button.setTextColor(Color.RED)    // Negative action
-            // }
-            button.setTextColor(Color.BLACK)
-            actionContainer.addView(button)
+            var style = action.style
+            println(style.toString())
+            if (style == 0) {
+                setTextColor(Color.parseColor("#1685fe"))
+                layoutParams.setMargins(0, 1, 0, 0)
+            } else {
+                setTextColor(Color.BLACK)
+                setTypeface(null, android.graphics.Typeface.BOLD)
+                layoutParams.setMargins(0, 10, 0, 0)
+            }
+
+            
+            this.layoutParams = layoutParams
         }
-
-        // Set transparent background for BottomSheetDialog
-        bottomSheetDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        
-        // Set content view and show the dialog
-        bottomSheetDialog.setContentView(view)
-        bottomSheetDialog.show()
+        actionContainer.addView(button)
     }
+
+    // Set transparent background for BottomSheetDialog
+    bottomSheetDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    
+    // Set content view and show the dialog
+    bottomSheetDialog.setContentView(view)
+    bottomSheetDialog.show()
+}
 
 
     private fun showDialog(
