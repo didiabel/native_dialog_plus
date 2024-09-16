@@ -1,5 +1,11 @@
 package com.josephabel.native_dialog_plus
 
+import android.view.View
+import android.widget.TextView
+import android.widget.LinearLayout
+import android.widget.Button
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import android.view.LayoutInflater
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -27,26 +33,41 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+  
         when (call.method) {
             "showDialog" -> {
                 
                 val title = call.argument<String?>("title") ?: ""
                 val message = call.argument<String>("message") ?: ""
                 val buttons = call.argument<List<Map<String, Any>>>("actions")
+                val styleShow = call.argument<Int>("style")
 
                 if (buttons != null) {                    
                     val buttonConfigs = buttons.mapIndexed { index, button ->
-                        println(button["style"])
+                        //println(button["style"])
                         val text = button["text"] as String
                         val style = button["style"] as Int
                         NativeDialogPlusAction(text, style) {
                             result.success(index)
                         }
                     }
-                    showDialog(title, message, buttonConfigs, result)
+
+                 
+                    //Show ActionSheet or AlertDialog based on style
+                    if (styleShow == 0) {
+                        // ActionSheet style for Android
+                        showActionSheet(title, buttonConfigs, result)
+                    } else {
+                        // Default Alert style
+                        showDialog(title, message, buttonConfigs, result)
+                    }
+                    
                 } else {
                     result.error("INVALID_ARGUMENT", "Buttons argument is missing or invalid", null)
-                }                
+                }
+                
+                
+               
             }
             else -> {
                 result.notImplemented()
@@ -72,6 +93,51 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onDetachedFromActivity() {
         activity = null
+    }
+
+    private fun showActionSheet(
+    title: String,
+    actions: List<NativeDialogPlusAction>,
+    result: Result
+    ) {
+        val bottomSheetDialog = BottomSheetDialog(activity ?: throw NullPointerException(), R.style.NativeDialogStyle)
+        
+        // Inflate custom layout for BottomSheetDialog
+        val view = LayoutInflater.from(activity).inflate(R.layout.action_sheet_layout, null)
+        
+        // Set title if available
+        val titleView: TextView = view.findViewById(R.id.title)
+        if (title.isNotEmpty()) {
+            titleView.text = title
+            titleView.visibility = View.VISIBLE
+        }
+
+        // Set actions (buttons) dynamically based on the list provided
+        val actionContainer: LinearLayout = view.findViewById(R.id.action_container)
+        actions.forEachIndexed { index, action ->
+            val button = Button(activity)
+            button.text = action.text
+            button.setOnClickListener {
+                result.success(index)
+                bottomSheetDialog.dismiss()
+            }
+
+            // Set button style based on action style (0: positive, 1: neutral, 2: negative)
+            // when (action.style) {
+            //     0 -> button.setTextColor(Color.GREEN)  // Positive action
+            //     1 -> button.setTextColor(Color.BLUE)   // Neutral action
+            //     2 -> button.setTextColor(Color.RED)    // Negative action
+            // }
+            button.setTextColor(Color.BLACK)
+            actionContainer.addView(button)
+        }
+
+        // Set transparent background for BottomSheetDialog
+        bottomSheetDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        
+        // Set content view and show the dialog
+        bottomSheetDialog.setContentView(view)
+        bottomSheetDialog.show()
     }
 
 
