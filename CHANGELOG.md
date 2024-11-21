@@ -13,3 +13,7 @@
 ## 1.0.7
 
 - Added Action sheet for Android
+
+## 1.0.9
+
+- Updated compileSdkVersion to 31
