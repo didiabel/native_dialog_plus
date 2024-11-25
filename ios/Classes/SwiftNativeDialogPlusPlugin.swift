@@ -116,5 +116,4 @@ public class SwiftNativeDialogPlusPlugin: NSObject, FlutterPlugin {
     }
     controller.present(alert, animated: true)
   }
-
 }
