@@ -12,4 +12,12 @@
 
 ## 1.0.7
 
-- Added wasm compatibility
+- Added Action sheet for Android
+
+## 1.0.9
+
+- Updated compileSdkVersion to 31
+
+## 1.1.0
+
+-- Added wasm compatibility

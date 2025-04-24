@@ -9,4 +9,9 @@
         <item name="android:windowEnterAnimation">@anim/dialog_enter_animation</item>
         <item name="android:windowExitAnimation">@anim/dialog_exit_animation</item>
     </style>
+
+    <style name="TransparentBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
 </resources>
