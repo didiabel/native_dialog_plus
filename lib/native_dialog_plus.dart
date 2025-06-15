@@ -23,7 +23,7 @@ class NativeDialogPlusAction {
   bool get enabled => onPressed != null;
 
   Map<dynamic, dynamic> toJson() {
-    return {"text": text, "style": style.index, "enabled": enabled};
+    return {"text": text, "style": style.index, "enabled": enabled,"destructive":style == NativeDialogPlusActionStyle.destructive};
   }
 }
 
