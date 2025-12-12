@@ -15,9 +15,7 @@ therefore its limited to one defaultStyle, cancel and destructive each, the orde
 
 #### IOS
 
-iOS has no limit on the number of actions.
-
-Buttons are disabled if no callback is passed on onPressed.
+iOS Buttons are disabled if no callback is passed on onPressed.
 
 ## Usage
 

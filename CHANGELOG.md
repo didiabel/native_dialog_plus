@@ -21,3 +21,7 @@
 ## 1.1.0
 
 -- Added wasm compatibility
+
+## 1.1.1
+
+-- Fix Dialogs not working in Macos

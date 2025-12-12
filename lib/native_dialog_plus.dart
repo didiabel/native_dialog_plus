@@ -23,7 +23,12 @@ class NativeDialogPlusAction {
   bool get enabled => onPressed != null;
 
   Map<dynamic, dynamic> toJson() {
-    return {"text": text, "style": style.index, "enabled": enabled,"destructive":style == NativeDialogPlusActionStyle.destructive};
+    return {
+      "text": text,
+      "style": style.index,
+      "enabled": enabled,
+      "destructive": style == NativeDialogPlusActionStyle.destructive
+    };
   }
 }
 
@@ -68,7 +73,6 @@ class NativeDialogPlus {
   /// **IMPORTANT**
   /// Android is limited to the maximum of 3 actions one of each NativeDialogPlusActionStyle style
   /// therefore its limited to one defaultStyle, cancel and destructive each, the order of the actions in the list does not change the position in the dialog.
-  /// iOS has no limit on the number of actions
   final List<NativeDialogPlusAction> actions;
 
   NativeDialogPlus({
