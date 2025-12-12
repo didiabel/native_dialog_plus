@@ -67,12 +67,12 @@ public class NativeDialogPlusPlugin: NSObject, FlutterPlugin {
     alert.informativeText = message ?? ""
     alert.alertStyle = alertStyle!
 
-    let buttons = args.value(forKey: "buttons") as! [NSDictionary]
+    let actions = args.value(forKey: "actions") as! [NSDictionary]
 
-    for (_, button) in buttons.enumerated() {
-      let title = button.value(forKey: "text") as! String
-      let enabled = button.value(forKey: "enabled") as! Bool
-      let destructive = button.value(forKey: "destructive") as! Bool
+    for (_, action) in actions.enumerated() {
+      let title = action.value(forKey: "text") as! String
+      let enabled = action.value(forKey: "enabled") as! Bool
+      let destructive = action.value(forKey: "destructive") as! Bool
 
       let alertButton = NSButton(title: title, target: nil, action: nil)
       alertButton.isEnabled = enabled
