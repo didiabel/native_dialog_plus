@@ -75,11 +75,16 @@ class NativeDialogPlus {
   /// therefore its limited to one defaultStyle, cancel and destructive each, the order of the actions in the list does not change the position in the dialog.
   final List<NativeDialogPlusAction> actions;
 
+  /// Whether the dialog can be dismissed by tapping outside of it (Android only).
+  /// Defaults to `true`.
+  final bool cancelable;
+
   NativeDialogPlus({
     this.title,
     this.message,
     this.style = NativeDialogPlusStyle.alert,
     required this.actions,
+    this.cancelable = true,
   });
 
   /// Shows the native iOS Dialog and calls the specific `onPressed` handler
@@ -90,7 +95,8 @@ class NativeDialogPlus {
           "title": title,
           "message": message,
           "style": style.index,
-          "actions": [for (var action in actions) action.toJson()]
+          "actions": [for (var action in actions) action.toJson()],
+          "cancelable": cancelable,
         }) ??
         -1;
     if (result == -1) return;
