@@ -71,6 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 NativeDialogPlus(
                   title: 'Moshiach NOW',
                   style: NativeDialogPlusStyle.actionSheet,
+                  cancelable: true,
                   actions: [
                     NativeDialogPlusAction(
                       text: 'Now',

@@ -44,8 +44,8 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
                 val styleShow = call.argument<Int>("style")
 
                 if (buttons != null) {                    
+                    val cancelable = call.argument<Boolean>("cancelable") ?: true
                     val buttonConfigs = buttons.mapIndexed { index, button ->
-                        //println(button["style"])
                         val text = button["text"] as String
                         val style = button["style"] as Int
                         NativeDialogPlusAction(text, style) {
@@ -53,14 +53,14 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
                         }
                     }
 
-                 
+
                     //Show ActionSheet or AlertDialog based on style
                     if (styleShow == 0) {
                         // ActionSheet style for Android
-                        showActionSheet(title, buttonConfigs, result)
+                        showActionSheet(title, buttonConfigs, cancelable, result)
                     } else {
                         // Default Alert style
-                        showDialog(title, message, buttonConfigs, result)
+                        showDialog(title, message, buttonConfigs, cancelable, result)
                     }
                     
                 } else {
@@ -99,16 +99,17 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
     private fun showActionSheet(
     title: String,
     actions: List<NativeDialogPlusAction>,
+    cancelable: Boolean,
     result: Result
 ) {
     val bottomSheetDialog = BottomSheetDialog(activity ?: throw NullPointerException(), R.style.NativeDialogStyle)
-    
+
     // Inflate custom layout for BottomSheetDialog
     val view = LayoutInflater.from(activity).inflate(R.layout.action_sheet_layout, null)
-    
+
     // Set white background for the dialog
     view.setBackgroundColor(Color.WHITE)
-    
+
     // Set title if available
     val titleView: TextView = view.findViewById(R.id.title)
     if (title.isNotEmpty()) {
@@ -130,26 +131,37 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
                 result.success(index)
                 bottomSheetDialog.dismiss()
             }
-            
+
             setBackgroundResource(R.drawable.rounded_button)
-           
+
             val layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            
-            setTextColor(Color.BLACK)
+
+            // Style 2 = destructive → red text
+            if (action.style == 2) {
+                setTextColor(Color.RED)
+            } else {
+                setTextColor(Color.BLACK)
+            }
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
             paint.isFakeBoldText = true
-            
+
             this.layoutParams = layoutParams
         }
         actionContainer.addView(button)
     }
 
+    bottomSheetDialog.setCancelable(cancelable)
+    bottomSheetDialog.setCanceledOnTouchOutside(cancelable)
+    if (cancelable) {
+        bottomSheetDialog.setOnCancelListener { result.success(-1) }
+    }
+
     // Set transparent background for BottomSheetDialog
     bottomSheetDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    
+
     // Set content view and show the dialog
     bottomSheetDialog.setContentView(view)
     bottomSheetDialog.show()
@@ -160,24 +172,26 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         title: String,
         message: String,
         buttons: List<NativeDialogPlusAction>,
+        cancelable: Boolean,
         result: Result
     ) {
-
         val builder = AlertDialog.Builder(activity ?: throw NullPointerException(), R.style.NativeDialogStyle)
             .setTitle(title)
             .setMessage(message)
-            .setCancelable(false)
+            .setCancelable(cancelable)
 
         // Add buttons to the dialog
         buttons.forEachIndexed { index, action ->
-            val listener = DialogInterface.OnClickListener { dialog, _ -> result.success(index) }
-            if (listener != null) {
-                when (action.style) {
-                    0 -> builder.setPositiveButton(action.text, listener)
-                    1 -> builder.setNeutralButton(action.text, listener)
-                    2 -> builder.setNegativeButton(action.text, listener)
-                }
+            val listener = DialogInterface.OnClickListener { _, _ -> result.success(index) }
+            when (action.style) {
+                0 -> builder.setPositiveButton(action.text, listener)
+                1 -> builder.setNeutralButton(action.text, listener)
+                2 -> builder.setNegativeButton(action.text, listener)
             }
+        }
+
+        if (cancelable) {
+            builder.setOnCancelListener { result.success(-1) }
         }
 
         val alertDialog = builder.create()
@@ -188,19 +202,8 @@ class NativeDialogPlusPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
         alertDialog.show()
 
-        // for future implementations this is how to set button colors
-        // import
-        // import android.graphics.Color
-        // import android.widget.Button
-        
-        // val negativeButton: Button? = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-        // negativeButton?.setTextColor(Color.RED)
-
-        // val positiveButton: Button? = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
-        // positiveButton?.setTextColor(Color.GREEN)
-
-        // val neutralButton: Button? = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL)
-        // neutralButton?.setTextColor(Color.BLUE)
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(Color.RED)
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(Color.parseColor("#2196F3"))
     }
 
     data class NativeDialogPlusAction(val text: String, val style: Int, val onPressed: () -> Unit)

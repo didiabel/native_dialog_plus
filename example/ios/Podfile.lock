@@ -14,9 +14,9 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/native_dialog_plus/ios"
 
 SPEC CHECKSUMS:
-  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  native_dialog_plus: 2569983aa751786faf8377ca0b8b7c4d434b4ba1
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
+  native_dialog_plus: 6579cb8aa89a9866649c821ca42557f514f31e3f
 
-PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
+PODFILE CHECKSUM: 4f1c12611da7338d21589c0b2ecd6bd20b109694
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

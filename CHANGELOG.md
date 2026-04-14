@@ -25,3 +25,10 @@
 ## 1.1.1
 
 -- Fix Dialogs not working in Macos
+
+## 1.1.2
+
+- [Android] Support dismissal by tapping outside the dialog via new `cancelable` parameter on `NativeDialogPlus` (defaults to `true`)
+- [Android] Destructive buttons now render in red; default buttons render in blue
+- [Android] Action sheet destructive buttons now render in red
+- [iOS] Added Swift Package Manager (SPM) support
