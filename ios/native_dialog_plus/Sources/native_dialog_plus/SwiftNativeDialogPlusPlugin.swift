@@ -1,6 +1,7 @@
 import Flutter
 import UIKit
 
+@objc(NativeDialogPlusPlugin)
 public class SwiftNativeDialogPlusPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(
@@ -16,7 +17,8 @@ public class SwiftNativeDialogPlusPlugin: NSObject, FlutterPlugin {
         self.showDialog(call, result)
       }
       if exception != nil {
-        result(FlutterError(code: "DIALOG_ERROR", message: exception!.reason, details: nil))
+        result(FlutterError(code: "DIALOG_ERROR", message: exception?.localizedDescription ?? 
+        "Unknown Error", details: nil))
         return
       }
     default:
@@ -117,4 +119,13 @@ public class SwiftNativeDialogPlusPlugin: NSObject, FlutterPlugin {
     controller.present(alert, animated: true)
   }
 
+}
+
+func tryBlock(_ block: () throws -> Void) -> Error? {
+    do {
+        try block()
+        return nil
+    } catch {
+        return error
+    }
 }
