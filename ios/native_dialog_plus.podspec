@@ -13,7 +13,7 @@ Minimalistic plugin to show native iOS Dialogs
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Your Company' => 'email@example.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
+  s.source_files = 'native_dialog_plus/Sources/native_dialog_plus/**/*'
   s.dependency 'Flutter'
   s.platform = :ios, '9.0'
 

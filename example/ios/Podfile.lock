@@ -1,21 +1,15 @@
 PODS:
   - Flutter (1.0.0)
-  - native_dialog_plus (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - native_dialog_plus (from `.symlinks/plugins/native_dialog_plus/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  native_dialog_plus:
-    :path: ".symlinks/plugins/native_dialog_plus/ios"
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  native_dialog_plus: 6579cb8aa89a9866649c821ca42557f514f31e3f
 
 PODFILE CHECKSUM: 4f1c12611da7338d21589c0b2ecd6bd20b109694
 

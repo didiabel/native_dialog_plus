@@ -1,6 +1,9 @@
 import Flutter
 import UIKit
 
+// Exposed to the Objective-C runtime as `NativeDialogPlusPlugin` (the pluginClass
+// in pubspec.yaml) so GeneratedPluginRegistrant resolves it without an ObjC shim.
+@objc(NativeDialogPlusPlugin)
 public class SwiftNativeDialogPlusPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(
@@ -12,11 +15,8 @@ public class SwiftNativeDialogPlusPlugin: NSObject, FlutterPlugin {
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
     case "showDialog":
-      let exception = tryBlock {
-        self.showDialog(call, result)
-      }
-      if exception != nil {
-        result(FlutterError(code: "DIALOG_ERROR", message: exception!.reason, details: nil))
+      if let error = tryBlock({ self.showDialog(call, result) }) {
+        result(FlutterError(code: "DIALOG_ERROR", message: error.localizedDescription, details: nil))
         return
       }
     default:
@@ -117,4 +117,16 @@ public class SwiftNativeDialogPlusPlugin: NSObject, FlutterPlugin {
     controller.present(alert, animated: true)
   }
 
+}
+
+/// Runs `block`, returning any thrown Swift error instead of propagating it.
+/// Replaces the Objective-C `tryBlock` helper that a SwiftPM (single-language)
+/// target can no longer host alongside Swift sources.
+func tryBlock(_ block: () throws -> Void) -> Error? {
+  do {
+    try block()
+    return nil
+  } catch {
+    return error
+  }
 }
