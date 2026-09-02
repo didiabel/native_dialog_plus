@@ -26,6 +26,12 @@
 
 -- Fix Dialogs not working in Macos
 
+## 1.2.0
+
+- [iOS] Working Swift Package Manager support: `Package.swift` moved to `ios/native_dialog_plus/Package.swift` with the `FlutterFramework` dependency, matching the official Flutter SPM plugin template (thanks @sunweiyang #20 and @nasikhunamin #19)
+- [iOS] Plugin is now pure Swift (Objective-C shim removed); minimum iOS version raised to 12.0
+- Minimum Dart SDK raised to 3.6.0
+
 ## 1.1.2
 
 - [Android] Support dismissal by tapping outside the dialog via new `cancelable` parameter on `NativeDialogPlus` (defaults to `true`)
